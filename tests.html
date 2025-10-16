@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Manager - Tests</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 2rem;
+            border-bottom: 3px solid #4CAF50;
+            padding-bottom: 1rem;
+        }
+
+        .test-section {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #4CAF50;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .test-case {
+            background: #f9f9f9;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #2196F3;
+            border-radius: 4px;
+        }
+
+        .test-input, .test-output {
+            background: #fff;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .pass {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .fail {
+            color: #f44336;
+            font-weight: bold;
+        }
+
+        .warning {
+            color: #ff9800;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.6rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            background: #f0f0f0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Financial Manager - Test Suite</h1>
+
+        
+        <div class="test-section">
+            <h2>Validators Module Tests</h2>
+
+            <div class="test-case">
+                <h3>Test 1: Amount Validation (Cents Pattern)</h3>
+                <p>Pattern: <code>/\.\d{2}\b/</code></p>
+                <label>Test Amount:
+                    <input type="text" id="testAmount" placeholder="e.g., 5.50" value="5.50">
+                </label>
+                <button onclick="testAmountValidation()">Test</button>
+                <div id="amountResult" class="result" style="display:none;"></div>
+            </div>
+
+            <div class="test-case">
+                <h3>Test 2: Title Validation & Duplicate Detection</h3>
+                <p>Pattern: <code>/\b(\w+)\s+\1\b/i</code></p>
+                <label>Test Title:
+                    <input type="text" id="testTitle" placeholder="e.g., coffee coffee" value="coffee coffee">
+                </label>
+                <button onclick="testTitleValidation()">Test</button>
+                <div id="titleResult" class="result" style="display:none;"></div>
+            </div>
+
+            <div class="test-case">
+                <h3>Test 3: Beverage Detection</h3>
+                <p>Pattern: <code>/(coffee|tea)/i</code></p>
+                <label>Test Title:
+                    <input type="text" id="testBeverage" placeholder="e.g., Coffee shop" value="Coffee shop">
+                </label>
+                <button onclick="testBeverageDetection()">Test</button>
+                <div id="beverageResult" class="result" style="display:none;"></div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Search Module Tests</h2>
+
+            <div class="test-case">
+                <h3>Test 4: Search Functionality</h3>
+                <label>Search Query:
+                    <input type="text" id="searchQuery" placeholder="e.g., coffee" value="coffee">
+                </label>
+                <button onclick="testSearch()">Test</button>
+                <div id="searchResult" class="result" style="display:none;"></div>
+            </div>
+
+            <div class="test-case">
+                <h3>Test 5: Category Filter</h3>
+                <label>Select Category:
+                    <select id="filterCategory">
+                        <option value="">All</option>
+                        <option value="Food">Food</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Books">Books</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="tuition">tuition</option>
+                        <option value="Others">Other</option>
+                    </select>
+                </label>
+                <button onclick="testCategoryFilter()">Test</button>
+                <div id="categoryResult" class="result" style="display:none;"></div>
+            </div>
+        </div>
+
+
+        <div class="test-section">
+            <h2>Statistics Tests</h2>
+
+            <div class="test-case">
+                <h3>Test 6: Calculate Statistics</h3>
+                <button onclick="testStatistics()">Calculate</button>
+                <div id="statsResult" class="result" style="display:none;"></div>
+            </div>
+        </div>
+
+        
+        <div class="test-section">
+            <h2>📋 Regex Patterns Reference</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pattern Name</th>
+                        <th>Regex</th>
+                        <th>Purpose</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cents Pattern</td>
+                        <td><code>/\.\d{2}\b/</code></td>
+                        <td>Validates 2 decimal places</td>
+                        <td>✓ 5.50 ✗ 5.5</td>
+                    </tr>
+                    <tr>
+                        <td>Beverage Pattern</td>
+                        <td><code>/(coffee|tea)/i</code></td>
+                        <td>Detects beverage keywords</td>
+                        <td>✓ Coffee ✓ TEA ✓ tea shop</td>
+                    </tr>
+                    <tr>
+                        <td>Duplicate Pattern</td>
+                        <td><code>/\b(\w+)\s+\1\b/i</code></td>
+                        <td>Finds repeated words</td>
+                        <td>✓ coffee coffee ✗ coffee shop</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    
+        <div class="test-section">
+            <h2>✅ Manual Testing Checklist</h2>
+            <ul style="list-style: none;">
+                <li>✓ <strong>Add Transaction</strong> - Create new transaction with all fields</li>
+                <li>✓ <strong>Edit Transaction</strong> - Modify existing transaction</li>
+                <li>✓ <strong>Delete Transaction</strong> - Remove transaction with confirmation</li>
+                <li>✓ <strong>Live Search</strong> - Search updates results in real-time</li>
+                <li>✓ <strong>Filter by Category</strong> - Only selected category shows</li>
+                <li>✓ <strong>Filter by Date</strong> - Date range filtering works</li>
+                <li>✓ <strong>Sort by Date</strong> - Transactions sorted chronologically</li>
+                <li>✓ <strong>Sort by Title</strong> - Transactions sorted alphabetically</li>
+                <li>✓ <strong>Budget Alert</strong> - Alert shows when budget exceeded</li>
+                <li>✓ <strong>Dark Mode</strong> - Theme persists on reload</li>
+                <li>✓ <strong>Responsive Design</strong> - Works on mobile, tablet, desktop</li>
+                <li>✓ <strong>Offline Mode</strong> - App works without internet</li>
+                <li>✓ <strong>Export Data</strong> - JSON backup downloads</li>
+                <li>✓ <strong>Import Data</strong> - JSON file restores data</li>
+                <li>✓ <strong>Add Category</strong> - Custom category appears in dropdown</li>
+            </ul>
+        </div>
+    </div>
+
+    
+    <script>
+        const testTransactions = [
+            { id: 1, description: 'lunch at cafeteria', amount: 12.50, category: 'Food' },
+            { id: 2, description: 'chemistry Book', amount: 89.99, category: 'books' },
+            { id: 3, description: 'bus pass', amount: 45, category: 'transport' },
+            { id: 4, description: 'coffee with friends', amount: 8.75, category: 'Entertainment' },
+            { id: 5, description: 'Wifi bills', amount: 30, category: 'Bills' }
+        ];
+
+        const VALIDATORS = {
+            centsPattern: /\.\d{2}\b/,
+            beveragePattern: /(coffee|tea)/i,
+            duplicatePattern: /\b(\w+)\s+\1\b/i
+        };
+
+        function testAmountValidation() {
+            const value = document.getElementById('testAmount').value;
+            const num = parseFloat(value);
+            const result = document.getElementById('amountResult');
+            
+            let html = `<strong>Input:</strong> "${value}"<br>`;
+            html += `<strong>Number:</strong> ${num}<br>`;
+            
+            if (isNaN(num)) {
+                html += `<span class="fail">❌ Invalid number</span>`;
+            } else if (num < 0) {
+                html += `<span class="fail">❌ Negative amount</span>`;
+            } else if (VALIDATORS.centsPattern.test(value)) {
+                html += `<span class="pass"> Valid format (2 decimal places)</span>`;
+            } else {
+                html += `<span class="fail">❌ Missing 2 decimal places</span>`;
+            }
+            
+            result.innerHTML = html;
+            result.style.display = 'block';
+        }
+
+        function testTitleValidation() {
+            const value = document.getElementById('testTitle').value;
+            const result = document.getElementById('titleResult');
+            
+            let html = `<strong>Input:</strong> "${value}"<br>`;
+            
+            if (!value.trim()) {
+                html += `<span class="fail"> Empty title</span>`;
+            } else if (VALIDATORS.duplicatePattern.test(value)) {
+                html += `<span class="warning">⚠️ Duplicate words detected: "${value.match(VALIDATORS.duplicatePattern)[0]}"</span>`;
+            } else {
+                html += `<span class="pass"> Valid title</span>`;
+            }
+            
+            result.innerHTML = html;
+            result.style.display = 'block';
+        }
+
+        function testBeverageDetection() {
+            const value = document.getElementById('testBeverage').value;
+            const result = document.getElementById('beverageResult');
+            
+            let html = `<strong>Input:</strong> "${value}"<br>`;
+            
+            if (VALIDATORS.beveragePattern.test(value)) {
+                const match = value.match(VALIDATORS.beveragePattern)[0];
+                html += `<span class="pass"> Beverage detected: "${match}"</span>`;
+            } else {
+                html += `<span class="fail"> Not found! </span>`;
+            }
+            
+            result.innerHTML = html;
+            result.style.display = 'block';
+        }
+
+        function testSearch() {
+            const query = document.getElementById('searchQuery').value.toLowerCase();
+            const result = document.getElementById('searchResult');
+            
+            const filtered = testTransactions.filter(t =>
+                t.title.toLowerCase().includes(query) ||
+                t.category.toLowerCase().includes(query)
+            );
+            
+            let html = `<strong>Query:</strong> "${query}"<br>`;
+            html += `<strong>Results:</strong> ${filtered.length} found<br>`;
+            html += '<table><thead><tr><th>Title</th><th>Amount</th><th>Category</th></tr></thead><tbody>';
+            
+            filtered.forEach(t => {
+                html += `<tr><td>${t.title}</td><td>$${t.amount}</td><td>${t.category}</td></tr>`;
+            });
+            
+            html += '</tbody></table>';
+            result.innerHTML = html;
+            result.style.display = 'block';
+        }
+
+        function testCategoryFilter() {
+            const category = document.getElementById('filterCategory').value;
+            const result = document.getElementById('categoryResult');
+            
+            const filtered = category ? testTransactions.filter(t => t.category === category) : testTransactions;
+            
+            let html = `<strong>Category:</strong> "${category || 'All'}"<br>`;
+            html += `<strong>Results:</strong> ${filtered.length} transactions<br>`;
+            html += '<table><thead><tr><th>Title</th><th>Amount</th><th>Category</th></tr></thead><tbody>';
+            
+            filtered.forEach(t => {
+                html += `<tr><td>${t.title}</td><td>$${t.amount}</td><td>${t.category}</td></tr>`;
+            });
+            
+            html += '</tbody></table>';
+            result.innerHTML = html;
+            result.style.display = 'block';
+        }
+
+        function testStatistics() {
+            const result = document.getElementById('statsResult');
+            
+            const total = testTransactions.length;
+            const sum = testTransactions.reduce((acc, t) => acc + t.amount, 0);
+            const average = (sum / total).toFixed(2);
+            
+            const categories = {};
+            testTransactions.forEach(t => {
+                categories[t.category] = (categories[t.category] || 0) + t.amount;
+            });
+            const topCat = Object.entries(categories).sort((a, b) => b[1] - a[1])[0];
+            
+            let html = `
+                <strong>Total Transactions:</strong> ${total}<br>
+                <strong>Total Spent:</strong> $${sum.toFixed(2)}<br>
+                <strong>Average:</strong> $${average}<br>
+                <strong>Top Category:</strong> ${topCat[0]} ($${topCat[1].toFixed(2)})<br>
+                <hr>
+                <strong>Category Breakdown:</strong><br>
+            `;
+            
+            Object.entries()}
