@@ -1,1 +1,1 @@
-# Student-finance_tracker
+Student Finance Tracker
