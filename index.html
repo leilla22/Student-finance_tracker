@@ -35,40 +35,43 @@
             <section id="settings" class="section"></section>
         </main>
         <div id="transactionModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">Add Transaction</h2>
-                <button class="close-btn" onclick="closeModal()">✕</button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modalTitle">Add Transaction</h2>
+                    <button class="close-btn" onclick="closeModal()">✕</button>
+                </div>
+                <form onsubmit="handleSaveTransaction(event)">
+                    <label>Date:
+                        <input type="date" id="transDate" required>
+                    </label>
+                    <label>Title:
+                        <input type="text" id="transTitle" placeholder="e.g., Coffee" required>
+                    </label>
+                    <label>Amount (USD):
+                        <input type="number" id="transAmount" step="0.01" min="0" required>
+                    </label>
+                    <label>Category:
+                        <select id="transCategory" required></select>
+                    </label>
+                    <label>Notes:
+                        <textarea id="transNotes" rows="3" placeholder="Optional notes"></textarea>
+                    </label>
+                    <div id="validationMessage" style="color: var(--text-secondary); margin-top: 1rem;"></div>
+                    <button type="submit" style="margin-top: 1rem;">Save Transaction</button>
+                </form>
             </div>
-            <form onsubmit="handleSaveTransaction(event)">
-                <label>Date:
-                    <input type="date" id="transDate" required>
-                </label>
-                <label>Title:
-                    <input type="text" id="transTitle" placeholder="" required>
-                </label>
-                <label>Amount (USD):
-                    <input type="number" id="transAmount" step="0.01" min="0" required>
-                </label>
-                <label>Category:
-                    <select id="transCategory" required></select>
-                </label>
-                <label>description:
-                    <textarea id="transNotes" rows="3" placeholder="description"></textarea>
-                </label>
-                <div id="validationMessage" style="color: var(--text-secondary); margin-top: 1rem;"></div>
-                <button type="submit" style="margin-top: 1rem;">Save Transaction</button>
-            </form>
-            <script src="scripts/storage.js"></script>
-    <script src="scripts/state.js"></script>
-    <script src="scripts/validators.js"></script>
-    <script src="scripts/search.js"></script>
-    <script src="scripts/ui.js"></script>
-    <script src="scripts/dashboard.js"></script>
-    <script src="scripts/transactions.js"></script>
-    <script src="scripts/settings.js"></script>
-    <script src="scripts/about.js"></script>
-    <script src="scripts/app.js"></script>
+        </div>
+
+        <script src="scripts/storage.js"></script>
+        <script src="scripts/state.js"></script>
+        <script src="scripts/validators.js"></script>
+        <script src="scripts/search.js"></script>
+        <script src="scripts/ui.js"></script>
+        <script src="scripts/dashboard.js"></script>
+        <script src="scripts/transactions.js"></script>
+        <script src="scripts/settings.js"></script>
+        <script src="scripts/about.js"></script>
+        <script src="scripts/app.js"></script>
 
     </body>
 </html>
