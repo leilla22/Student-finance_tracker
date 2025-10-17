@@ -11,13 +11,12 @@ const Dashboard = {
             </div>
             <h3>Recent Transactions</h3>
             <div id="recentTransactions"></div>
-            <div id="trendChart"></div>
         `;
         
         this.renderStats();
         this.renderBudgetStatus();
         this.renderRecentTransactions();
-        this.renderTrendChart();
+        // 7-day trend chart removed per request
     },
 
     
@@ -50,10 +49,11 @@ const Dashboard = {
     renderBudgetStatus() {
         const stats = State.getStats();
         const spent = parseFloat(stats.sum);
-        const cap = State.settings.budgetLimit;
-        const percentage = Math.min((spent / Limit) * 100, 100);
-        const remaining = Limit - spent;
-        const isOver = spent > Limit;
+        // Use budgetCap as canonical setting name (fall back to budgetLimit for compatibility)
+        const cap = parseFloat(State.settings.budgetCap ?? State.settings.budgetLimit ?? 1000);
+        const percentage = cap > 0 ? Math.min((spent / cap) * 100, 100) : 0;
+        const remaining = cap - spent;
+        const isOver = spent > cap;
 
         const budgetHTML = `
             <p>Spent: <strong>$${spent.toFixed(2)}</strong> / Cap: <strong>$${cap.toFixed(2)}</strong></p>
@@ -105,46 +105,5 @@ const Dashboard = {
         `;
     },
 
-    renderTrendChart() {
-        const stats = State.getStats();
-        const sevenDayStats = {};
-        const today = new Date();
-        
-        for (let i = 6; i >= 0; i--) {
-            const date = new Date(today.getTime() - i * 24 * 60 * 60 * 1000)
-                .toISOString().split('T')[0];
-            sevenDayStats[date] = 0;
-        }
-        
-        stats.sevenDayTransactions.forEach(t => {
-            sevenDayStats[t.date] = (sevenDayStats[t.date] || 0) + t.amount;
-        });
-
-        const maxAmount = Math.max(...Object.values(sevenDayStats), 1);
-        const dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        
-        const chartHTML = `
-            <h3 style="margin-top: 2rem;">7-Day Spending Trend</h3>
-            <div style="display: flex; gap: 0.5rem; align-items: flex-end; height: 150px; margin-top: 1rem;">
-                ${Object.entries(sevenDayStats).map(([date, amount]) => {
-                    const height = (amount / maxAmount) * 100;
-                    const dateObj = new Date(date);
-                    const dayLabel = dayLabels[dateObj.getDay()];
-                    return `
-                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
-                            <div style="background: var(--accent-color); width: 100%; height: ${height}%; border-radius: 4px 4px 0 0; position: relative;">
-                                <span style="position: absolute; top: -20px; width: 100%; text-align: center; font-size: 0.8rem;">$${amount.toFixed(0)}</span>
-                            </div>
-                            <small style="margin-top: 0.5rem;">${dayLabel}</small>
-                        </div>
-                    `;
-                }).join('')}
-            </div>
-        `;
-        
-        const container = document.getElementById('trendChart');
-        if (container) {
-            container.innerHTML = chartHTML;
-        }
-    }
+    // renderTrendChart intentionally removed
 };

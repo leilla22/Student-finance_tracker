@@ -6,7 +6,7 @@ const Transactions = {
             <button onclick="openAddModal()" class="mt-1 mb-1">+ Add Transaction</button>
 
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="🔍 Search transactions..." oninput="handleSearch()">
+                <input type="text" id="searchInput" placeholder=" Search transactions..." oninput="handleSearch()">
                 <div id="searchResults" class="search-results hidden"></div>
             </div>
 
@@ -27,12 +27,15 @@ const Transactions = {
                 <table id="transactionsTable">
                     <thead>
                         <tr>
-                            <th><button onclick="sortTable('date')">Date ↕️</button></th>
-                            <th><button onclick="sortTable('category')">category ↕️</button></th>
+
+                            <th>id</th>
+                            <th>Date</th>
+                            <th>Description</th>
                             <th>Amount</th>
                             <th>Category</th>
-                            <th>description</th>
-                            <th>date</th>
+                            <th>createdAt</th>
+                            <th>updatedAt</th>
+                                    <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="transactionsTableBody">
@@ -40,7 +43,7 @@ const Transactions = {
                 </table>
             </div>
         `;
-
+        // populate category selects and render current transactions
         UI.renderCategoryFilters();
         this.renderTable();
     },
@@ -48,16 +51,17 @@ const Transactions = {
     renderTable() {
         const filtered = State.getFilteredTransactions();
         const tbody = document.getElementById('transactionsTableBody');
-        
+
         if (!tbody) return;
-        
+
         tbody.innerHTML = filtered.map(t => `
             <tr>
+
                 <td>${t.id}</td>
                 <td>${t.date}</td>
-                <td>$${t.amount.toFixed(2)}</td>
-                <td>${t.category}</td>
                 <td>${t.description}</td>
+                <td>$${(t.amount || 0).toFixed(2)}</td>
+                <td>${t.category}</td>
                 <td>${t.createdAt}</td>
                 <td>${t.updatedAt}</td>
                 <td>
@@ -68,42 +72,46 @@ const Transactions = {
         `).join('');
 
         if (filtered.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No transactions found</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No transactions found</td></tr>';
         }
     },
 
-    
     handleSaveTransaction(e) {
         e.preventDefault();
-        
+
         const date = document.getElementById('transDate').value;
         const description = document.getElementById('transDescription').value;
-        const amount = parseFloat(document.getElementById('transAmount').value);
+        const amountRaw = document.getElementById('transAmount').value;
+        const amount = parseFloat(amountRaw);
         const category = document.getElementById('transCategory').value;
-        const categoryValidation = Validators.validatecCategory(category);
-        const amountValidation = Validators.validateAmount(amount);
         const msgDiv = document.getElementById('validationMessage');
 
-        if (!titleValidation.isValid || !amountValidation.isValid) {
-            msgDiv.innerHTML = `<span class="text-danger">${titleValidation.message || amountValidation.message}</span>`;
+        const titleValidation = Validators.validateTitle(description);
+        const amountValidation = Validators.validateAmount(amount);
+        const dateValidation = Validators.validateDate(date);
+        const categoryValidation = { isValid: !!category, message: 'Please select a category' };
+
+        if (!titleValidation.isValid || !amountValidation.isValid || !dateValidation.isValid || !categoryValidation.isValid) {
+            msgDiv.innerHTML = `<span class="text-danger">${titleValidation.message || amountValidation.message || dateValidation.message || categoryValidation.message}</span>`;
             return;
         }
 
-        if (categoryValidation.warning) {
-            msgDiv.innerHTML = `<span class="text-danger">${categoryValidation.message}</span>`;
+        if (titleValidation.warning) {
+            msgDiv.innerHTML = `<span class="text-warning">${titleValidation.message}</span>`;
         }
 
+        const timestamp = new Date().toISOString();
+
         if (State.editingId) {
-            State.updateTransaction(State.editingId, description, amount, category, date, createdAt, updatedAt);
+            State.updateTransaction(State.editingId, date, description, amount, category);
         } else {
-            State.addTransaction(description, amount, category, date, createdAt, updatedAt);
+            State.addTransaction(date, description, amount, category);
         }
 
         UI.closeModal();
         refreshUI();
     },
 
-    
     deleteTransaction(id) {
         if (confirm('Delete this transaction?')) {
             State.deleteTransaction(id);
@@ -111,12 +119,11 @@ const Transactions = {
         }
     },
 
-    
     handleSearch() {
         State.filters.search = document.getElementById('searchInput').value;
         const results = State.getFilteredTransactions();
         const resultsDiv = document.getElementById('searchResults');
-        
+
         if (State.filters.search.trim() && results.length > 0) {
             resultsDiv.classList.remove('hidden');
             resultsDiv.textContent = `Found ${results.length} result(s)`;
@@ -126,12 +133,11 @@ const Transactions = {
         } else {
             resultsDiv.classList.add('hidden');
         }
-        
+
         this.renderTable();
         Dashboard.renderStats();
         Dashboard.renderBudgetStatus();
     },
-
 
     handleCategoryFilter() {
         State.filters.category = document.getElementById('categoryFilter').value;
@@ -139,7 +145,6 @@ const Transactions = {
         Dashboard.renderStats();
         Dashboard.renderBudgetStatus();
     },
-
 
     handleDateFilter() {
         State.filters.dateFrom = document.getElementById('dateFrom').value;
@@ -149,7 +154,6 @@ const Transactions = {
         Dashboard.renderBudgetStatus();
     },
 
-    
     sortTable(field) {
         State.transactions.sort((a, b) => {
             if (field === 'date') {

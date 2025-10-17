@@ -36,30 +36,32 @@ const State = {
 
     addTransaction(date, description, amount, category) {
         const newId = Math.max(...this.transactions.map(t => t.id), 0) + 1;
+        const timestamp = new Date().toISOString();
         this.transactions.push({ 
             id: newId,
             description, 
             amount: parseFloat(amount),
             category, 
             date, 
-            createdAt,
-            updatedAt 
-             
+            createdAt: timestamp,
+            updatedAt: timestamp
         });
         Storage.saveTransactions(this.transactions);
     },
 
-    updateTransaction(id, date, description, amount, category, createdAt, updatedAt ) {
+    updateTransaction(id, date, description, amount, category) {
         const index = this.transactions.findIndex(t => t.id === id);
         if (index !== -1) {
+            const existing = this.transactions[index];
+            const updatedAt = new Date().toISOString();
             this.transactions[index] = { 
                 id, 
                 date, 
                 amount: parseFloat(amount), 
                 category, 
                 description,
-                createdAt,
-                updatedAt 
+                createdAt: existing.createdAt || existing.date || updatedAt,
+                updatedAt
             };
             Storage.saveTransactions(this.transactions);
         }

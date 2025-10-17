@@ -4,10 +4,10 @@ const Search = {
         if (!term.trim()) return transactions;
         const lower = term.toLowerCase();
         return transactions.filter(t => 
-            t.title.toLowerCase().includes(lower) ||
-            t.category.toLowerCase().includes(lower) ||
-            t.amount.toString().includes(lower) ||
-            t.notes.toLowerCase().includes(lower)
+            (t.description || '').toLowerCase().includes(lower) ||
+            (t.category || '').toLowerCase().includes(lower) ||
+            (t.amount !== undefined ? t.amount.toString().includes(lower) : false) ||
+            (t.notes || '').toLowerCase().includes(lower)
         );
     },
 

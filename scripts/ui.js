@@ -29,11 +29,13 @@ const UI = {
 
     openAddModal() {
         State.editingId = null;
-        document.getElementById('modaldescription').textContent = 'Add Transaction';
+        document.getElementById('modalTitle').textContent = 'Add Transaction';
         document.getElementById('transDate').value = new Date().toISOString().split('T')[0];
-        document.getElementById('transdescription').value = '';
+        document.getElementById('transDescription').value = '';
         document.getElementById('transAmount').value = '';
-        document.getElementById('transCategory').value = State.categories[0];
+        // ensure category select is populated
+        UI.renderCategoryFilters();
+        document.getElementById('transCategory').value = State.categories[0] || '';
         document.getElementById('validationMessage').innerHTML = '';
         document.getElementById('transactionModal').classList.add('active');
     },
@@ -44,10 +46,12 @@ const UI = {
         if (!trans) return;
         
         State.editingId = id;
-        document.getElementById('modaldescription').textContent = 'Edit Transaction';
+        document.getElementById('modalTitle').textContent = 'Edit Transaction';
         document.getElementById('transDate').value = trans.date;
-        document.getElementById('transdescription').value = trans.description;
+        document.getElementById('transDescription').value = trans.description;
         document.getElementById('transAmount').value = trans.amount;
+        // ensure category select is populated
+        UI.renderCategoryFilters();
         document.getElementById('transCategory').value = trans.category;
         document.getElementById('validationMessage').innerHTML = '';
         document.getElementById('transactionModal').classList.add('active');
