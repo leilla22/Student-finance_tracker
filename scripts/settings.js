@@ -43,7 +43,7 @@ const Settings = {
 
     saveBudgetLimit(e) {
         e.preventDefault();
-        // use budgetCap as the canonical property
+        
         State.settings.budgetCap = parseFloat(document.getElementById('budgetLimit').value) || 2000;
         Storage.saveSettings(State.settings);
         refreshUI();
