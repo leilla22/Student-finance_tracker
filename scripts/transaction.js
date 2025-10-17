@@ -49,7 +49,8 @@ const Transactions = {
     },
 
     renderTable() {
-        const filtered = State.getFilteredTransactions();
+    const filtered = State.getFilteredTransactions();
+    filtered.sort((a, b) => (parseInt(b.id, 10) || 0) - (parseInt(a.id, 10) || 0));
         const tbody = document.getElementById('transactionsTableBody');
 
         if (!tbody) return;
