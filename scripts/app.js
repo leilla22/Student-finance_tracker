@@ -71,8 +71,8 @@ function refreshUI() {
 }
 
 
-function initApp() {
-    State.init();
+async function initApp() {
+    await State.init();
     UI.loadTheme();
     UI.renderNavigation();
     refreshUI();
@@ -89,4 +89,6 @@ function setupKeyboardShortcuts() {
 }
 
 
-window.addEventListener('load', initApp);
+window.addEventListener('load', () => {
+    initApp().catch(err => console.error('Init error:', err));
+});

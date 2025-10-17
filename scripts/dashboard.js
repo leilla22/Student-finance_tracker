@@ -16,7 +16,6 @@ const Dashboard = {
         this.renderStats();
         this.renderBudgetStatus();
         this.renderRecentTransactions();
-        // 7-day trend chart removed per request
     },
 
     
@@ -49,8 +48,7 @@ const Dashboard = {
     renderBudgetStatus() {
         const stats = State.getStats();
         const spent = parseFloat(stats.sum);
-        // Use budgetCap as canonical setting name (fall back to budgetLimit for compatibility)
-        const cap = parseFloat(State.settings.budgetCap ?? State.settings.budgetLimit ?? 1000);
+        const cap = parseFloat(State.settings.budgetCap ?? State.settings.budgetLimit ?? 2000);
         const percentage = cap > 0 ? Math.min((spent / cap) * 100, 100) : 0;
         const remaining = cap - spent;
         const isOver = spent > cap;
@@ -80,7 +78,6 @@ const Dashboard = {
         
         const container = document.getElementById('recentTransactions');
         if (!container) return;
-        
         container.innerHTML = `
             <table style="margin-top: 1rem;">
                 <thead>
@@ -89,21 +86,23 @@ const Dashboard = {
                         <th>Description</th>
                         <th>Amount</th>
                         <th>Category</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
                     </tr>
                 </thead>
                 <tbody>
                     ${recent.map(t => `
                         <tr>
-                            <td>${t.date}</td>
-                            <td>${t.description}</td>
-                            <td>$${t.amount.toFixed(2)}</td>
-                            <td>${t.category}</td>
+                            <td>${t.date || ''}</td>
+                            <td>${t.description || ''}</td>
+                            <td>$${(parseFloat(t.amount) || 0).toFixed(2)}</td>
+                            <td>${t.category || ''}</td>
+                            <td>${t.createdAt || ''}</td>
+                            <td>${t.updatedAt || ''}</td>
                         </tr>
                     `).join('')}
                 </tbody>
             </table>
         `;
     },
-
-    // renderTrendChart intentionally removed
 };

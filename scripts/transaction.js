@@ -43,7 +43,7 @@ const Transactions = {
                 </table>
             </div>
         `;
-        // populate category selects and render current transactions
+
         UI.renderCategoryFilters();
         this.renderTable();
     },

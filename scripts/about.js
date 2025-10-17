@@ -89,7 +89,7 @@ const About = {
                     <li><strong>ESC</strong> - Close modals</li>
                 </ul>
 
-                <h3 style="margin-top: 2rem;">❓ Help & Support</h3>
+                <h3 style="margin-top: 2rem;"> Help & Support</h3>
                 <p style="margin-top: 1rem;">
                     <strong>Getting Started:</strong>
                 </p>

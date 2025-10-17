@@ -23,9 +23,39 @@ const State = {
     filters: { search: '', category: '', dateFrom: '', dateTo: '' },
     editingId: null,
 
-    init() {
+    async init() {
         const stored = Storage.loadTransactions();
-        this.transactions = stored || [...SEED_DATA];
+        const normalize = (r, existingIds = []) => {
+            const idNum = typeof r.id === 'number' ? r.id : (parseInt(r.id, 10) || null);
+            const description = r.description ?? r.title ?? '';
+            const amount = r.amount !== undefined ? parseFloat(r.amount) : 0;
+            const category = r.category ?? r.tag ?? 'Other';
+            const date = r.date ?? (r.createdAt ? r.createdAt.split(' ')[0] : new Date().toISOString().split('T')[0]);
+            const createdAt = r.createdAt ?? r.created_at ?? date;
+            const updatedAt = r.updatedAt ?? r.updated_at ?? createdAt;
+            const nextId = (Math.max(0, ...existingIds.filter(n=>typeof n==='number')) || 0) + 1;
+            return { id: idNum || nextId, description, amount, category, date, createdAt, updatedAt };
+        };
+
+        if (stored && Array.isArray(stored)) {
+            this.transactions = stored.map(r => normalize(r, stored.map(s => (typeof s.id === 'number' ? s.id : parseInt(s.id,10)||0))));
+        } else {
+            try {
+                const resp = await fetch('seed.json');
+                if (resp.ok) {
+                    const data = await resp.json();
+                    if (data && Array.isArray(data.transactions)) {
+                        this.transactions = data.transactions.map((r, idx) => normalize(r, data.transactions.map(s => (typeof s.id === 'number' ? s.id : parseInt(s.id,10)||0))));
+                    } else {
+                        this.transactions = SEED_DATA.map(r => normalize(r, SEED_DATA.map(s => s.id)));
+                    }
+                } else {
+                    this.transactions = SEED_DATA.map(r => normalize(r, SEED_DATA.map(s => s.id)));
+                }
+            } catch (e) {
+                this.transactions = SEED_DATA.map(r => normalize(r, SEED_DATA.map(s => s.id)));
+            }
+        }
         
         const settingsStored = Storage.loadSettings();
         if (settingsStored) {
@@ -82,7 +112,7 @@ const State = {
     getStats() {
         const filtered = this.getFilteredTransactions();
         const total = filtered.length;
-        const sum = filtered.reduce((acc, t) => acc + t.amount, 0);
+    const sum = filtered.reduce((acc, t) => acc + (parseFloat(t.amount) || 0), 0);
         
         const categoryTotals = {};
         filtered.forEach(t => {
