@@ -28,11 +28,11 @@ const Transactions = {
                     <thead>
                         <tr>
                             <th><button onclick="sortTable('date')">Date ↕️</button></th>
-                            <th><button onclick="sortTable('title')">Title ↕️</button></th>
+                            <th><button onclick="sortTable('category')">category ↕️</button></th>
                             <th>Amount</th>
                             <th>Category</th>
-                            <th>Notes</th>
-                            <th>Actions</th>
+                            <th>description</th>
+                            <th>date</th>
                         </tr>
                     </thead>
                     <tbody id="transactionsTableBody">
@@ -77,7 +77,7 @@ const Transactions = {
         e.preventDefault();
         
         const date = document.getElementById('transDate').value;
-        const description = document.getElementById('transdescription').value;
+        const description = document.getElementById('transDescription').value;
         const amount = parseFloat(document.getElementById('transAmount').value);
         const category = document.getElementById('transCategory').value;
         const categoryValidation = Validators.validatecCategory(category);
@@ -154,8 +154,8 @@ const Transactions = {
         State.transactions.sort((a, b) => {
             if (field === 'date') {
                 return new Date(b.date) - new Date(a.date);
-            } else if (field === 'title') {
-                return a.title.localeCompare(b.title);
+            } else if (field === 'description') {
+                return a.description.localeCompare(b.description);
             }
             return 0;
         });

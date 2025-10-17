@@ -4,12 +4,12 @@ const Settings = {
         container.innerHTML = `
             <h2>Settings</h2>
 
-            <form onsubmit="saveBudgetCap(event)">
+            <form onsubmit="saveBudgetLimit(event)">
                 <h3>Budget Management</h3>
-                <label>Monthly Budget Cap (USD):
-                    <input type="number" id="budgetCap" step="0.01" min="0" value="${State.settings.budgetCap}">
+                <label>Monthly Budget Limit (USD):
+                    <input type="number" id="budgetLimit" step="0.01" min="0" value="${State.settings.budgetLimit}">
                 </label>
-                <button type="submit" style="margin-top: 1rem;">Save Budget Cap</button>
+                <button type="submit" style="margin-top: 1rem;">Save Budget Limit</button>
             </form>
 
             <form onsubmit="saveExchangeRates(event)">
@@ -18,7 +18,7 @@ const Settings = {
                     <input type="number" id="usdToEur" step="0.01" min="0" value="${State.settings.exchangeRates.EUR}">
                 </label>
                 <label>USD to RWF:
-                    <input type="number" id="usdToGbp" step="0.01" min="0" value="${State.settings.exchangeRates.GBP}">
+                    <input type="number" id="usdToRWF" step="0.01" min="0" value="${State.settings.exchangeRates.RWF}">
                 </label>
                 <button type="submit" style="margin-top: 1rem;">Save Rates</button>
             </form>
@@ -43,10 +43,10 @@ const Settings = {
 
     saveBudgetCap(e) {
         e.preventDefault();
-        State.settings.budgetCap = parseFloat(document.getElementById('budgetCap').value) || 1000;
+        State.settings.budgetLimit = parseFloat(document.getElementById('budgetLimit').value) || 2000;
         Storage.saveSettings(State.settings);
         refreshUI();
-        alert('Budget cap saved!');
+        alert('Budget Limit saved!');
     },
 
     saveExchangeRates(e) {

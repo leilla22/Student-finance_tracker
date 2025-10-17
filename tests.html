@@ -133,7 +133,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>🧪 Financial Manager - Test Suite</h1>
+        <h1> Student Finance Tracker - Test Suite</h1>
 
         
         <div class="test-section">
@@ -213,7 +213,7 @@
 
         
         <div class="test-section">
-            <h2>📋 Regex Patterns Reference</h2>
+            <h2> Regex Patterns Reference</h2>
             <table>
                 <thead>
                     <tr>
@@ -294,13 +294,13 @@
             html += `<strong>Number:</strong> ${num}<br>`;
             
             if (isNaN(num)) {
-                html += `<span class="fail">❌ Invalid number</span>`;
+                html += `<span class="fail"> Invalid number</span>`;
             } else if (num < 0) {
                 html += `<span class="fail">❌ Negative amount</span>`;
             } else if (VALIDATORS.centsPattern.test(value)) {
                 html += `<span class="pass"> Valid format (2 decimal places)</span>`;
             } else {
-                html += `<span class="fail">❌ Missing 2 decimal places</span>`;
+                html += `<span class="fail"> Missing 2 decimal places</span>`;
             }
             
             result.innerHTML = html;

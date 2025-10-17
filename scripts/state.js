@@ -1,10 +1,24 @@
+const SEED_DATA = [
+    {id: 1, description: 'lunch at cafeteria', amount: 12.50, category: 'food', date: '2025-09-25', createdAt: '2025-09-25 10:00', updatedAt: '2025-09-25 10:00'},
+    {id: 2, description: 'chemistry textbook', amount: 89.99, category: 'books', date: '2025-09-23', createdAt: '2025-09-23 16:00', updatedAt: '2025-09-23 16:00'},
+    {id: 3, description: 'bus pass', amount: 45, category: 'transport', date: '2024-09-20', createdAt: '2025-09-20 11:00', updatedAt: '2025-09-20 11:00'},
+    {id: 4, description: 'coffee with friends', amount: 8.75, category: 'entertainment', date: '2025-09-28', createdAt: '2025-09-28 13:00', updatedAt: '2025-09-28 13:00'},
+    {id: 5, description: 'Wifi bills', amount: 30, category: 'Bills', date: '2025-10-01', createdAt: '2025-10-01 20:00', updatedAt: '2025-10-01 20:00' },
+    {id: 6, description: 'buying new clothes', amount: 100, category: 'shopping', date: '2025-10-01', createdAt: '2025-10-01 23:00', updatedAt: '2025-10-01 23:00'},
+    {id: 7, description: 'drake concert tickets', amount: 150, category: 'entertainment', date: '2025-10-01', createdAt: '2025-10-01 23:40', updatedAt: '2025-10-01 23:50'},
+    {id: 8, description: 'buying food groceries', amount: 20, category: 'Bills', date: '2025-10-2', createdAt: '2025-10-2 10:00', updatedAt: '2025-10-2 10:00'},
+    {id: 9, description: 'donating to people', amount: 100, category: 'others', date: '2025-10-2', createdAt: '2025-10-2 12:00', updatedAt: '2025-10-2 13:00'},
+    {id: 10, description: 'paying school tuition', amount: 500, category: 'tuition', date: '2025-10-3', createdAt: '2025-10-3 10:00', updatedAt: '2025-10-3 10:00'}, 
+];
+
+
 const State = {
     transactions: [],
     categories: ['Food', 'Books', 'Transport', 'Entertainment', 'tuition', 'bills','Others'],
     settings: {
         budgetCap: 1000,
         theme: 'light',
-        exchangeRates: { EUR: 0.92, GBP: 0.79, RWF: 1300 }
+        exchangeRates: { USD: 1, EUR: 0.8, RWF: 1450 }
     },
     filters: { search: '', category: '', dateFrom: '', dateTo: '' },
     editingId: null,
@@ -35,7 +49,7 @@ const State = {
         Storage.saveTransactions(this.transactions);
     },
 
-    updateTransaction(id, date, description, amount, category ) {
+    updateTransaction(id, date, description, amount, category, createdAt, updatedAt ) {
         const index = this.transactions.findIndex(t => t.id === id);
         if (index !== -1) {
             this.transactions[index] = { 
@@ -43,7 +57,9 @@ const State = {
                 date, 
                 amount: parseFloat(amount), 
                 category, 
-                description 
+                description,
+                createdAt,
+                updatedAt 
             };
             Storage.saveTransactions(this.transactions);
         }

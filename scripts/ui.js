@@ -29,12 +29,11 @@ const UI = {
 
     openAddModal() {
         State.editingId = null;
-        document.getElementById('modalTitle').textContent = 'Add Transaction';
+        document.getElementById('modaldescription').textContent = 'Add Transaction';
         document.getElementById('transDate').value = new Date().toISOString().split('T')[0];
-        document.getElementById('transTitle').value = '';
+        document.getElementById('transdescription').value = '';
         document.getElementById('transAmount').value = '';
         document.getElementById('transCategory').value = State.categories[0];
-        document.getElementById('transNotes').value = '';
         document.getElementById('validationMessage').innerHTML = '';
         document.getElementById('transactionModal').classList.add('active');
     },
@@ -45,12 +44,11 @@ const UI = {
         if (!trans) return;
         
         State.editingId = id;
-        document.getElementById('modalTitle').textContent = 'Edit Transaction';
+        document.getElementById('modaldescription').textContent = 'Edit Transaction';
         document.getElementById('transDate').value = trans.date;
-        document.getElementById('transTitle').value = trans.title;
+        document.getElementById('transdescription').value = trans.description;
         document.getElementById('transAmount').value = trans.amount;
         document.getElementById('transCategory').value = trans.category;
-        document.getElementById('transNotes').value = trans.notes;
         document.getElementById('validationMessage').innerHTML = '';
         document.getElementById('transactionModal').classList.add('active');
     },
@@ -87,10 +85,10 @@ const UI = {
 
         if (isOver) {
             alertDiv.setAttribute('aria-live', 'assertive');
-            alertDiv.textContent = `⚠️ Alert: Budget exceeded by $${Math.abs(remaining).toFixed(2)}`;
+            alertDiv.textContent = ` Alert: Budget exceeded by $${Math.abs(remaining).toFixed(2)}`;
         } else {
             alertDiv.setAttribute('aria-live', 'polite');
-            alertDiv.textContent = `✓ Budget on track: $${remaining.toFixed(2)} remaining`;
+            alertDiv.textContent = ` Budget on track: $${remaining.toFixed(2)} remaining`;
         }
     }
 };

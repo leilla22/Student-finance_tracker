@@ -14,7 +14,7 @@
         "description": "chemistry textbook",
         "amount":89.99,
         "category": "books",
-        "date": "2024-09-23",
+        "date": "2025-09-23",
         "createdAt":"2025-09-23 16:00",
         "updatedAt":"2025-09-23 16:00" 
     },
@@ -83,12 +83,12 @@
     },
     {
         "id":"10",
-        "description": "paying for second semester",
+        "description": "paying school tuition",
         "amount": 500,
         "category": "tuition",
-        "date":"2025-10-10",
-        "createdAt":"2025-10-10 9:00",
-        "updatedAt": "2025-10-10 9:00"
+        "date": "2025-10-3",
+        "createdAt": "2025-10-3 10:00",
+        "updatedAt": "2025-10-3 10:00"
     }
 ],
 "Settings": {

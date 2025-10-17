@@ -50,10 +50,10 @@ const Dashboard = {
     renderBudgetStatus() {
         const stats = State.getStats();
         const spent = parseFloat(stats.sum);
-        const cap = State.settings.budgetCap;
-        const percentage = Math.min((spent / cap) * 100, 100);
-        const remaining = cap - spent;
-        const isOver = spent > cap;
+        const cap = State.settings.budgetLimit;
+        const percentage = Math.min((spent / Limit) * 100, 100);
+        const remaining = Limit - spent;
+        const isOver = spent > Limit;
 
         const budgetHTML = `
             <p>Spent: <strong>$${spent.toFixed(2)}</strong> / Cap: <strong>$${cap.toFixed(2)}</strong></p>
@@ -86,7 +86,7 @@ const Dashboard = {
                 <thead>
                     <tr>
                         <th>Date</th>
-                        <th>Title</th>
+                        <th>Description</th>
                         <th>Amount</th>
                         <th>Category</th>
                     </tr>
@@ -95,7 +95,7 @@ const Dashboard = {
                     ${recent.map(t => `
                         <tr>
                             <td>${t.date}</td>
-                            <td>${t.title}</td>
+                            <td>${t.description}</td>
                             <td>$${t.amount.toFixed(2)}</td>
                             <td>${t.category}</td>
                         </tr>

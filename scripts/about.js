@@ -1,5 +1,4 @@
 const About = {
-    // Render complete about section
     render() {
         const container = document.getElementById('about');
         

@@ -38,8 +38,8 @@ function sortTable(field) {
     Transactions.sortTable(field);
 }
 
-function saveBudgetCap(e) {
-    Settings.saveBudgetCap(e);
+function saveBudgetLimit(e) {
+    Settings.saveBudgetLimit(e);
 }
 
 function saveExchangeRates(e) {
@@ -62,7 +62,6 @@ function resetData() {
     Settings.resetData();
 }
 
-// Refresh all UI sections
 function refreshUI() {
     Dashboard.render();
     Transactions.render();
