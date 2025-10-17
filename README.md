@@ -236,15 +236,14 @@ Must follow the data model above. Missing required fields or invalid types trigg
 ## Deployment
 
 This app is deployed on **GitHub Pages**:
-- [Live Demo](https://YOUR-USERNAME.github/.io/student-finance-tracker)
-- Push to `gh-pages` branch or enable Pages in repository settings
+- [Live Demo](https://leilla22.github.io/Student-finance_tracker/)
 
 ---
 
 ## Demo Video
 
 Watch the full feature walkthrough (keyboard navigation, regex search, import/export):
-- [Unlisted Demo Video](https://www.youtube.com/watch?v=YOUR-VIDEO-ID)
+- [Unlisted Demo Video](https://youtu.be/yE_P_KvlLL4)
 
 *2–3 minute video showing:*
 - Keyboard-only navigation
